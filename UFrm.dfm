@@ -37,10 +37,8 @@ object Frm: TFrm
     Style = tsButtons
     TabOrder = 0
     TabStop = False
-    ExplicitHeight = 417
     object TabStart: TTabSheet
       Caption = 'Start'
-      ExplicitHeight = 386
       object LbWelcome: TLabel
         Left = 0
         Top = 0
@@ -403,6 +401,9 @@ object Frm: TFrm
     end
     object TabPoker: TTabSheet
       Caption = 'Poker'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
       ExplicitHeight = 386
       object LbParticipants: TLabel
         Left = 16
@@ -1240,7 +1241,6 @@ object Frm: TFrm
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitTop = 418
   end
   object IL: TImageList
     Height = 24

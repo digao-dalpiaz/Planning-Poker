@@ -59,7 +59,7 @@ type
   private
     procedure SetRoundButtons(hab: Boolean);
     procedure SetBoxEstimate(hab: Boolean);
-    procedure FillStatistics(votes, max, min, avg: String);
+    procedure FillStatistics(const votes, max, min, avg: String);
     procedure AtCountConnections;
     procedure Pure_AddItem(const A: String);
     procedure ResetAllControls;
@@ -408,7 +408,7 @@ begin
   AtCountConnections;
 end;
 
-procedure TFrm.FillStatistics(votes, max, min, avg: String);
+procedure TFrm.FillStatistics(const votes, max, min, avg: String);
 
   procedure Add(Title, Value: String);
   begin
