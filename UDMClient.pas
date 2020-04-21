@@ -62,7 +62,7 @@ end;
 
 procedure TDMClient.CConnect(Sender: TObject; Socket: TDzSocket);
 begin
-  //enviar versão e nome ao server
+  //send version and user name to the server
   C.Send('C', ArrayToMsg([STR_VERSION, pubUser]));
 end;
 

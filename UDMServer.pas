@@ -149,7 +149,7 @@ end;
 procedure TDMServer.ClientNumberPointed(Socket: TDzSocket; const A: String);
 var C: TClient;
 begin
-   //a client made an estimate
+  //a client made an estimate
   if InvalidSocket(Socket) then Exit;
 
   if not OpenedRound then Exit;
