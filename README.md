@@ -3,6 +3,8 @@
 
 ## Delphi App to do Sprint Planning Estimates remotely
 
+[Download Planning Poker v1.2.0](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.2.0/PlanningPoker.exe)
+
 With this App your team can estimate Sprint task remotely.
 Working as client/server, your team need to choose one member to be the Server, and the others will be clients, just like in a Host/Client game.
 
