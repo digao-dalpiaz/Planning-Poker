@@ -137,7 +137,8 @@ begin
     l_nums.CalcStatistics;
     //general properties
     lst.Insert(0, ArrayToMsg([OpenedRound,
-      l_nums.Count, l_nums.max, l_nums.min, FormatFloat('0.0', l_nums.avg)]));
+      l_nums.Count, l_nums.max, l_nums.min,
+      FormatFloat('0.0', l_nums.avg), FormatFloat('0.0', l_nums.median)]));
 
     Result := lst.Text;
   finally

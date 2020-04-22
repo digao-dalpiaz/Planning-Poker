@@ -4,7 +4,7 @@ object Frm: TFrm
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Planning Poker'
-  ClientHeight = 514
+  ClientHeight = 530
   ClientWidth = 705
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object Frm: TFrm
   TextHeight = 13
   object DividerBar: TBevel
     Left = 0
-    Top = 424
+    Top = 440
     Width = 705
     Height = 1
     Align = alBottom
@@ -31,7 +31,7 @@ object Frm: TFrm
     Left = 0
     Top = 0
     Width = 705
-    Height = 424
+    Height = 440
     ActivePage = TabStart
     Align = alClient
     Style = tsButtons
@@ -404,7 +404,7 @@ object Frm: TFrm
       ExplicitLeft = 0
       ExplicitTop = 0
       ExplicitWidth = 0
-      ExplicitHeight = 0
+      ExplicitHeight = 393
       object LbParticipants: TLabel
         Left = 16
         Top = 8
@@ -520,7 +520,7 @@ object Frm: TFrm
         Left = 16
         Top = 24
         Width = 417
-        Height = 377
+        Height = 393
         Style = lbOwnerDrawFixed
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -1200,7 +1200,7 @@ object Frm: TFrm
         Left = 464
         Top = 296
         Width = 217
-        Height = 97
+        Height = 121
         Columns = <
           item
             Width = 75
@@ -1225,7 +1225,7 @@ object Frm: TFrm
   end
   object EdLog: TMemo
     Left = 0
-    Top = 425
+    Top = 441
     Width = 705
     Height = 89
     TabStop = False

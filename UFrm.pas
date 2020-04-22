@@ -59,7 +59,7 @@ type
   private
     procedure SetRoundButtons(hab: Boolean);
     procedure SetBoxEstimate(hab: Boolean);
-    procedure FillStatistics(const votes, max, min, avg: String);
+    procedure FillStatistics(const votes, max, min, avg, median: String);
     procedure ResetAllControls;
     procedure ClearAllClients;
     procedure LoadRegistry;
@@ -366,7 +366,7 @@ begin
     props := lst[0]; //first line contains general properties
     Data := MsgToArray(props);
     SetBoxEstimate(Data[0]);
-    FillStatistics(Data[1], Data[2], Data[3], Data[4]);
+    FillStatistics(Data[1], Data[2], Data[3], Data[4], Data[5]);
     lst.Delete(0);
     //**keep box loading before list because drawing depends on this
 
@@ -401,7 +401,7 @@ begin
   AtCountConnections;
 end;
 
-procedure TFrm.FillStatistics(const votes, max, min, avg: String);
+procedure TFrm.FillStatistics(const votes, max, min, avg, median: String);
 
   procedure Add(Title, Value: String);
   begin
@@ -413,12 +413,18 @@ procedure TFrm.FillStatistics(const votes, max, min, avg: String);
   end;
 
 begin
-  Stats.Clear;
+  Stats.Items.BeginUpdate;
+  try
+    Stats.Clear;
 
-  Add('Votes', votes);
-  Add('Bigger', max);
-  Add('Smaller', min);
-  Add('Average', avg);
+    Add('Votes', votes);
+    Add('Bigger', max);
+    Add('Smaller', min);
+    Add('Average', avg);
+    Add('Median', median);
+  finally
+    Stats.Items.EndUpdate;
+  end;
 end;
 
 procedure TFrm.AtCountConnections;

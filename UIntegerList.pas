@@ -7,12 +7,14 @@ uses System.Generics.Collections;
 type
   TIntegerList = class(TList<Integer>)
     max, min: Integer;
-    avg: Extended;
+    avg, median: Extended;
 
     procedure CalcStatistics;
   end;
 
 implementation
+
+uses System.Generics.Defaults;
 
 procedure TIntegerList.CalcStatistics;
 var I, sum: Integer;
@@ -20,8 +22,16 @@ begin
   max := 0;
   min := 0;
   avg := 0;
+  median := 0;
 
   sum := 0;
+
+  Sort(TComparer<Integer>.Construct(
+    function(const Left, Right: Integer): Integer
+    begin
+      Result := Left-Right;
+    end)
+  );
 
   for I in Self do
   begin
@@ -33,7 +43,14 @@ begin
   end;
 
   if Count>0 then
+  begin
     avg := sum / Count;
+
+    if Odd(Count) then
+      median := Items[((Count+1) div 2)-1] //central value
+    else
+      median := ( Items[(Count div 2)-1] + Items[Count div 2] ) / 2; //avg of two central values
+  end;
 end;
 
 end.
