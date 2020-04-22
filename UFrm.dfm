@@ -4,7 +4,7 @@ object Frm: TFrm
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Planning Poker'
-  ClientHeight = 530
+  ClientHeight = 553
   ClientWidth = 705
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object Frm: TFrm
   TextHeight = 13
   object DividerBar: TBevel
     Left = 0
-    Top = 440
+    Top = 463
     Width = 705
     Height = 1
     Align = alBottom
@@ -31,14 +31,16 @@ object Frm: TFrm
     Left = 0
     Top = 0
     Width = 705
-    Height = 440
-    ActivePage = TabStart
+    Height = 463
+    ActivePage = TabPoker
     Align = alClient
     Style = tsButtons
     TabOrder = 0
     TabStop = False
+    ExplicitHeight = 440
     object TabStart: TTabSheet
       Caption = 'Start'
+      ExplicitHeight = 409
       object LbWelcome: TLabel
         Left = 0
         Top = 0
@@ -401,10 +403,7 @@ object Frm: TFrm
     end
     object TabPoker: TTabSheet
       Caption = 'Poker'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 393
+      ExplicitHeight = 409
       object LbParticipants: TLabel
         Left = 16
         Top = 8
@@ -520,7 +519,7 @@ object Frm: TFrm
         Left = 16
         Top = 24
         Width = 417
-        Height = 393
+        Height = 417
         Style = lbOwnerDrawFixed
         Font.Charset = ANSI_CHARSET
         Font.Color = clWindowText
@@ -1200,14 +1199,14 @@ object Frm: TFrm
         Left = 464
         Top = 296
         Width = 217
-        Height = 121
+        Height = 145
         Columns = <
           item
-            Width = 75
+            Width = 85
           end
           item
             Alignment = taRightJustify
-            Width = 56
+            Width = 75
           end>
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -1225,7 +1224,7 @@ object Frm: TFrm
   end
   object EdLog: TMemo
     Left = 0
-    Top = 441
+    Top = 464
     Width = 705
     Height = 89
     TabStop = False
@@ -1241,6 +1240,7 @@ object Frm: TFrm
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
+    ExplicitTop = 441
   end
   object IL: TImageList
     Height = 24

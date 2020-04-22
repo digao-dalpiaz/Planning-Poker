@@ -138,7 +138,8 @@ begin
     //general properties
     lst.Insert(0, ArrayToMsg([OpenedRound,
       l_nums.Count, l_nums.max, l_nums.min,
-      FormatFloat('0.0', l_nums.avg), FormatFloat('0.0', l_nums.median)]));
+      FormatFloat('0.0', l_nums.avg), FormatFloat('0.0', l_nums.median),
+      FormatFloat('0 %', l_nums.proximity)]));
 
     Result := lst.Text;
   finally

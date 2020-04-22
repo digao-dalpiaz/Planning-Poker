@@ -7,7 +7,7 @@ uses System.Generics.Collections;
 type
   TIntegerList = class(TList<Integer>)
     max, min: Integer;
-    avg, median: Extended;
+    avg, median, proximity: Extended;
 
     procedure CalcStatistics;
   end;
@@ -23,6 +23,7 @@ begin
   min := 0;
   avg := 0;
   median := 0;
+  proximity := 0;
 
   sum := 0;
 
@@ -50,6 +51,8 @@ begin
       median := Items[((Count+1) div 2)-1] //central value
     else
       median := ( Items[(Count div 2)-1] + Items[Count div 2] ) / 2; //avg of two central values
+
+    proximity := min / max * 100;
   end;
 end;
 
