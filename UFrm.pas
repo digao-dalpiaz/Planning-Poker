@@ -418,8 +418,8 @@ begin
     Stats.Clear;
 
     Add('Votes', votes);
-    Add('Bigger', max);
-    Add('Smaller', min);
+    Add('Biggest', max);
+    Add('Smallest', min);
     Add('Average', avg);
     Add('Median', median);
     Add('Proximity', proximity);
