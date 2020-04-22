@@ -20,8 +20,8 @@ type
     procedure DataModuleCreate(Sender: TObject);
   private
     procedure ReceivedAccepted(const A: String);
-    procedure ClientConnected(const A: String);
-    procedure ClientDisconnected(const A: String);
+    procedure OtherClientConnected(const A: String);
+    procedure OtherClientDisconnected(const A: String);
     procedure ReceivedListOfClients(const A: String);
     procedure ReceivedOpenRound(const A: String);
     procedure ClientPointed(const A: String);
@@ -50,8 +50,8 @@ procedure TDMClient.CRead(Sender: TObject; Socket: TDzSocket; const Cmd: Char;
 begin
   case Cmd of
     'E': ReceivedAccepted(A);
-    'C': ClientConnected(A);
-    'D': ClientDisconnected(A);
+    'C': OtherClientConnected(A);
+    'D': OtherClientDisconnected(A);
     'L': ReceivedListOfClients(A);
     'A': ReceivedOpenRound(A);
     'P': ClientPointed(A);
@@ -94,13 +94,14 @@ begin
   Frm.FillClientsList(A);
 end;
 
-procedure TDMClient.ClientConnected(const A: String);
+procedure TDMClient.OtherClientConnected(const A: String);
 begin
   //a client connected - add into list
   Frm.AddItem(A);
+  Frm.AtCountConnections;
 end;
 
-procedure TDMClient.ClientDisconnected(const A: String);
+procedure TDMClient.OtherClientDisconnected(const A: String);
 var Idx: Integer;
 begin
   //a client disconnected - remove from list
@@ -109,6 +110,8 @@ begin
   begin
     Frm.L.Items.Objects[Idx].Free;
     Frm.L.Items.Delete(Idx);
+
+    Frm.AtCountConnections;
   end;
 end;
 

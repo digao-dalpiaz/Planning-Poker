@@ -60,8 +60,6 @@ type
     procedure SetRoundButtons(hab: Boolean);
     procedure SetBoxEstimate(hab: Boolean);
     procedure FillStatistics(const votes, max, min, avg: String);
-    procedure AtCountConnections;
-    procedure Pure_AddItem(const A: String);
     procedure ResetAllControls;
     procedure ClearAllClients;
     procedure LoadRegistry;
@@ -72,6 +70,7 @@ type
     procedure ClientDisconnected;
     procedure FillClientsList(const A: String);
     procedure AddItem(const A: String);
+    procedure AtCountConnections;
   end;
 
 var
@@ -290,12 +289,6 @@ begin
 end;
 
 procedure TFrm.AddItem(const A: String);
-begin
-  Pure_AddItem(A);
-  AtCountConnections;
-end;
-
-procedure TFrm.Pure_AddItem(const A: String);
 var
   Data: TMsgArray;
   Item: TItem;
@@ -388,7 +381,7 @@ begin
 
       for data_client in lst do
       begin
-        Pure_AddItem(data_client);
+        AddItem(data_client);
       end;
 
       L.TopIndex := TopIdx;
