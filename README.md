@@ -1,7 +1,7 @@
 
 # Planning Poker
 
-## Delphi App to do Sprint Planning Estimates remotely
+## Delphi App to send Sprint Planning Estimates remotely
 
 [Download Planning Poker v1.2.1](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.2.1/PlanningPoker.exe)
 
