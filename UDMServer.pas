@@ -21,6 +21,7 @@ type
     function ClientToArray(Socket: TDzSocket): String;
     procedure ClientRefreshRequest(Socket: TDzSocket);
     procedure ClearEstimatives;
+    procedure CheckForAllClientsEstimateDone;
   public
     OpenedRound: Boolean;
     function GetClientsList: String;
@@ -162,6 +163,8 @@ begin
 
   //send to all that a client made an estimate
   S.SendAll('P', Socket.ID.ToString);
+
+  CheckForAllClientsEstimateDone;
 end;
 
 procedure TDMServer.ClientRefreshRequest(Socket: TDzSocket);
@@ -198,12 +201,38 @@ begin
 
   OpenedRound := True;
   S.SendAll('A', GetClientsList);
+
+  Frm.SetRoundButtons(True);
 end;
 
 procedure TDMServer.CloseRound;
 begin
   OpenedRound := False;
   S.SendAll('X', GetClientsList);
+
+  Frm.SetRoundButtons(False);
+end;
+
+procedure TDMServer.CheckForAllClientsEstimateDone;
+var
+  k: TDzSocket;
+  C: TClient;
+begin
+  S.Lock;
+  try
+    for k in S do
+    begin
+      if InvalidSocket(k) then Continue;
+
+      C := k.Data;
+      if not C.Estimated then Exit;
+    end;
+  finally
+    S.Unlock;
+  end;
+
+  //when all clients have estimate done, then close the round
+  CloseRound;
 end;
 
 end.

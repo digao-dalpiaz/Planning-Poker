@@ -6,7 +6,7 @@ var
   pubUser: String;
   pubServerMode: Boolean;
 
-const STR_VERSION = '1.2.1';
+const STR_VERSION = '1.3.0';
 
 const INT_PORT = 6696;
 

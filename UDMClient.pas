@@ -38,7 +38,7 @@ implementation
 
 {$R *.dfm}
 
-uses Vars, UFrm, UItem, System.SysUtils, Utils;
+uses Vars, UFrm, UItem, System.SysUtils, Utils, ULanguage;
 
 procedure TDMClient.DataModuleCreate(Sender: TObject);
 begin
@@ -70,26 +70,26 @@ procedure TDMClient.CDisconnect(Sender: TObject; Socket: TDzSocket;
   const WasConnected: Boolean);
 begin
   if WasConnected then
-    Log('Disconnected.');
+    Log(Lang.Get('LOG_DISCONNECTED'));
 
   Frm.ClientDisconnected;
 end;
 
 procedure TDMClient.CConnectionLost(Sender: TObject; Socket: TDzSocket);
 begin
-  Log('The connection was lost to the server.');
+  Log(Lang.Get('LOG_CONNECTION_LOST'));
 end;
 
 procedure TDMClient.CError(Sender: TObject; Socket: TDzSocket;
   const Event: TErrorEvent; const ErrorCode: Integer; const ErrorMsg: string);
 begin
-  Log('ERROR: '+ErrorMsg);
+  Log(Format(Lang.Get('LOG_SOCKET_ERROR'), [ErrorMsg]));
 end;
 
 procedure TDMClient.ReceivedAccepted(const A: String);
 begin
   //server accepted client connection
-  Log('Connected.');
+  Log(Lang.Get('LOG_CONNECTED'));
   Frm.ClientConnected;
   Frm.FillClientsList(A);
 end;
@@ -132,7 +132,7 @@ end;
 
 procedure TDMClient.ReceivedOpenRound(const A: String);
 begin
-  Log('Estimate round has been opened.');
+  Log(Lang.Get('LOG_ROUND_OPENED'));
   //server opened estimate round
   Frm.FillClientsList(A);
 
@@ -141,21 +141,21 @@ end;
 
 procedure TDMClient.ReceivedCloseRound(const A: String);
 begin
-  Log('Estimate round has been closed.');
+  Log(Lang.Get('LOG_ROUND_CLOSED'));
   //server closed estimate round
   Frm.FillClientsList(A);
 end;
 
 procedure TDMClient.ReceivedListOfClients(const A: String);
 begin
-  Log('Clients list received.');
+  Log(Lang.Get('LOG_LIST_RECEIVED'));
   //clients list received
   Frm.FillClientsList(A);
 end;
 
 procedure TDMClient.ReceivedWrongVersion;
 begin
-  Log('Your version is not compatible with server.');
+  Log(Lang.Get('LOG_WRONG_VERSION'));
 end;
 
 end.

@@ -5,6 +5,16 @@
 
 [Download Planning Poker v1.2.1](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.2.1/PlanningPoker.exe)
 
+## What's New
+
+- 05/13/2020 (Version 1.3.0)
+
+   - Language support (English and Portuguese-Brazil languages).
+   - Implemented Abstain button, to send an estimate with zero value.
+   - Auto-close round when all clients have estimate done.
+
+## Description
+
 With this App your team can estimate Sprint task remotely.
 Working as client/server, your team needs to choose one member to be the Server, and the others will be clients, just like in a Host/Client game.
 

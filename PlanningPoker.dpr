@@ -11,7 +11,8 @@ uses
   UDMClient in 'UDMClient.pas' {DMClient: TDataModule},
   UDMServer in 'UDMServer.pas' {DMServer: TDataModule},
   Utils in 'Utils.pas',
-  UIntegerList in 'UIntegerList.pas';
+  UIntegerList in 'UIntegerList.pas',
+  ULanguage in 'ULanguage.pas';
 
 {$R *.res}
 

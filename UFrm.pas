@@ -20,7 +20,7 @@ type
     DividerBar: TBevel;
     BoxEstimate: TGroupBox;
     LbYourEstimate: TLabel;
-    BtnSend: TBitBtn;
+    BtnSendValue: TBitBtn;
     BoxCmdServer: TGroupBox;
     BtnOpenRound: TBitBtn;
     BtnCloseRound: TBitBtn;
@@ -44,20 +44,24 @@ type
     EdNumber: TEdit;
     IL: TImageList;
     LbHelpPort: TLabel;
+    LbLanguage: TLabel;
+    EdLanguage: TComboBox;
+    BtnSendAbstain: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure BoxModeClick(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
     procedure LDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
       State: TOwnerDrawState);
     procedure BtnOpenRoundClick(Sender: TObject);
-    procedure BtnSendClick(Sender: TObject);
+    procedure BtnSendValueClick(Sender: TObject);
     procedure BtnCloseRoundClick(Sender: TObject);
     procedure BtnRefreshClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure LbGitHubLinkClick(Sender: TObject; const Link: string;
       LinkType: TSysLinkType);
+    procedure EdLanguageChange(Sender: TObject);
+    procedure BtnSendAbstainClick(Sender: TObject);
   private
-    procedure SetRoundButtons(hab: Boolean);
     procedure SetBoxEstimate(hab: Boolean);
     procedure FillStatistics(const votes, max, min, avg, median, proximity: String);
     procedure ResetAllControls;
@@ -65,12 +69,15 @@ type
     procedure LoadRegistry;
     procedure SaveRegistry;
     procedure SetConnectionControlsEnabled(hab: Boolean);
+    procedure ReloadLanguage;
+    procedure SendValue(Value: Integer);
   public
     procedure ClientConnected;
     procedure ClientDisconnected;
     procedure FillClientsList(const A: String);
     procedure AddItem(const A: String);
     procedure AtCountConnections;
+    procedure SetRoundButtons(hab: Boolean);
   end;
 
 var
@@ -80,7 +87,7 @@ implementation
 
 {$R *.dfm}
 
-uses Vars, UItem, UDMServer, UDMClient, Utils,
+uses Vars, UItem, UDMServer, UDMClient, Utils, ULanguage,
   System.SysUtils, Vcl.Graphics, Winapi.Windows, Vcl.Dialogs, System.UITypes,
   Winapi.ShellAPI, System.Win.Registry;
 
@@ -94,10 +101,10 @@ begin
   //--
   Pages.ActivePage := TabStart;
 
-  LbVersion.Caption := 'Version '+STR_VERSION;
-  LbHelpPort.Caption := Format('TCP Port %d', [INT_PORT]);
-
   LoadRegistry;
+
+  if EdLanguage.ItemIndex=-1 then EdLanguage.ItemIndex := 0;
+  EdLanguageChange(nil);
 end;
 
 procedure TFrm.FormDestroy(Sender: TObject);
@@ -118,6 +125,8 @@ begin
 
     EdUser.Text := R.ReadString('User');
     EdHost.Text := R.ReadString('Host');
+
+    EdLanguage.ItemIndex := EdLanguage.Items.IndexOf(R.ReadString('Language'));
   finally
     R.Free;
   end;
@@ -134,6 +143,8 @@ begin
 
     R.WriteString('User', EdUser.Text);
     R.WriteString('Host', EdHost.Text);
+
+    R.WriteString('Language', EdLanguage.Text);
   finally
     R.Free;
   end;
@@ -185,7 +196,7 @@ begin
   EdUser.Text := Trim(EdUser.Text);
   if EdUser.Text=String.Empty then
   begin
-    MessageDlg('Please, type your name.', mtError, [mbOK], 0);
+    MessageDlg(Lang.Get('ERROR_NAME_BLANK'), mtError, [mbOK], 0);
     EdUser.SetFocus;
     Exit;
   end;
@@ -195,7 +206,7 @@ begin
     EdHost.Text := Trim(EdHost.Text);
     if EdHost.Text=String.Empty then
     begin
-      MessageDlg('Plase, type the server address.', mtError, [mbOK], 0);
+      MessageDlg(Lang.Get('ERROR_SERVER_BLANK'), mtError, [mbOK], 0);
       EdHost.SetFocus;
       Exit;
     end;
@@ -219,7 +230,7 @@ begin
   end;
 
   SetConnectionControlsEnabled(False);
-  Log('Connecting...');
+  Log(Lang.Get('LOG_CONNECTING'));
   DMClient.C.Connect;
 end;
 
@@ -260,11 +271,11 @@ begin
   begin
     if Item.Estimated then
     begin
-      Res := 'Estimated!';
+      Res := Lang.Get('LIST_ITEM_ESTIMATED');
       Cor := clGreen;
     end else
     begin
-      Res := 'Thinking...';
+      Res := Lang.Get('LIST_ITEM_THINKING');
       Cor := clGray;
     end;
   end else
@@ -273,11 +284,11 @@ begin
     begin
       if Item.Number<>0 then
       begin
-        Res := 'Value: '+Item.Number.ToString;
+        Res := Format(Lang.Get('LIST_ITEM_VALUE'), [Item.Number]);
         Cor := clBlack;
       end else
       begin
-        Res := 'Abstained';
+        Res := Lang.Get('LIST_ITEM_ABSTAINED');
         Cor := clRed;
       end;
     end;
@@ -312,31 +323,39 @@ end;
 procedure TFrm.BtnOpenRoundClick(Sender: TObject);
 begin
   DMServer.OpenRound;
-  SetRoundButtons(True);
 end;
 
 procedure TFrm.BtnCloseRoundClick(Sender: TObject);
 begin
   DMServer.CloseRound;
-  SetRoundButtons(False);
 end;
 
-procedure TFrm.BtnSendClick(Sender: TObject);
+procedure TFrm.BtnSendValueClick(Sender: TObject);
 var Val: Integer;
 begin
-   Val := StrToIntDef(EdNumber.Text, -1);
+   Val := StrToIntDef(EdNumber.Text, 0);
 
-   if Val<0 then
+   if Val<=0 then
    begin
-     MessageDlg('Invalid value', mtError, [mbOK], 0);
+     MessageDlg(Lang.Get('ERROR_INVALID_VALUE'), mtError, [mbOK], 0);
      EdNumber.SetFocus;
      Exit;
    end;
 
-  //send estimate to server
-  DMClient.C.Send('N', Val.ToString);
+  SendValue(Val);
+end;
 
-  Log('You have sent an estimate with value: '+Val.ToString);
+procedure TFrm.BtnSendAbstainClick(Sender: TObject);
+begin
+  SendValue(0);
+end;
+
+procedure TFrm.SendValue(Value: Integer);
+begin
+  //send estimate to server
+  DMClient.C.Send('N', Value.ToString);
+
+  Log(Format(Lang.Get('LOG_SENT_VALUE'), [Value]));
 end;
 
 procedure TFrm.BtnRefreshClick(Sender: TObject);
@@ -417,12 +436,12 @@ begin
   try
     Stats.Clear;
 
-    Add('Votes', votes);
-    Add('Biggest', max);
-    Add('Smallest', min);
-    Add('Average', avg);
-    Add('Median', median);
-    Add('Proximity', proximity);
+    Add(Lang.Get('INFO_STATS_VOTES'), votes);
+    Add(Lang.Get('INFO_STATS_BIGGEST'), max);
+    Add(Lang.Get('INFO_STATS_SMALLEST'), min);
+    Add(Lang.Get('INFO_STATS_AVERAGE'), avg);
+    Add(Lang.Get('INFO_STATS_MEDIAN'), median);
+    Add(Lang.Get('INFO_STATS_PROXIMITY'), proximity);
   finally
     Stats.Items.EndUpdate;
   end;
@@ -431,6 +450,38 @@ end;
 procedure TFrm.AtCountConnections;
 begin
   LbCountConnections.Caption := L.Count.ToString;
+end;
+
+procedure TFrm.EdLanguageChange(Sender: TObject);
+begin
+  Lang.SetLanguage(TLanguageName(EdLanguage.ItemIndex));
+  ReloadLanguage;
+end;
+
+procedure TFrm.ReloadLanguage;
+begin
+  LbWelcome.Caption := Lang.Get('WELCOME');
+  LbGitHub.Caption := Format('<a href="https://github.com/digao-dalpiaz">%s</a>', [Lang.Get('GITHUB_LINK_LABEL')]);
+  LbUserName.Caption := Lang.Get('LABEL_YOUR_NAME');
+  BoxMode.Caption := Lang.Get('LABEL_OP_MODE');
+  BoxMode.Items[0] := Lang.Get('MODE_CLIENT');
+  BoxMode.Items[1] := Lang.Get('MODE_SERVER');
+  LbServerAddress.Caption := Lang.Get('LABEL_SERVER_ADDR');
+  LbVersion.Caption := Format(Lang.Get('LABEL_VERSION'), [STR_VERSION]);
+  LbHelpPort.Caption := Format(Lang.Get('LABEL_SOCKET_PORT'), [INT_PORT]);
+  BtnStart.Caption := Lang.Get('BTN_START');
+  LbParticipants.Caption := Lang.Get('LABEL_PARTICIPANTS');
+  LbLabelConnections.Caption := Lang.Get('LABEL_CONNECTIONS');
+  LbLabelUser.Caption := Lang.Get('LABEL_USER');
+  BoxEstimate.Caption := Lang.Get('LABEL_ESTIMATE_BOX');
+  LbYourEstimate.Caption := Lang.Get('LABEL_YOUR_ESTIMATE');
+  BtnSendValue.Caption := Lang.Get('BTN_SEND_VALUE');
+  BtnSendAbstain.Caption := Lang.Get('BTN_SEND_ABSTAIN');
+  BoxCmdServer.Caption := Lang.Get('LABEL_ROUND_BOX');
+  BtnOpenRound.Caption := Lang.Get('BTN_OPEN_ROUND');
+  BtnCloseRound.Caption := Lang.Get('BTN_CLOSE_ROUND');
+  LbStatistics.Caption := Lang.Get('LABEL_STATISTICS');
+  BtnRefresh.Hint := Lang.Get('HINT_REFRESH_LIST');
 end;
 
 end.
