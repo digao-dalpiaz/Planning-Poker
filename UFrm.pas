@@ -63,7 +63,7 @@ type
     procedure BtnSendAbstainClick(Sender: TObject);
   private
     procedure SetBoxEstimate(hab: Boolean);
-    procedure FillStatistics(const votes, max, min, avg, median, proximity: String);
+    procedure FillStatistics(const votes, bounds, avg, median, proximity: String);
     procedure ResetAllControls;
     procedure ClearAllClients;
     procedure LoadRegistry;
@@ -385,7 +385,7 @@ begin
     props := lst[0]; //first line contains general properties
     Data := MsgToArray(props);
     SetBoxEstimate(Data[0]);
-    FillStatistics(Data[1], Data[2], Data[3], Data[4], Data[5], Data[6]);
+    FillStatistics(Data[1], Data[2], Data[3], Data[4], Data[5]);
     lst.Delete(0);
     //**keep box loading before list because drawing depends on this
 
@@ -420,7 +420,7 @@ begin
   AtCountConnections;
 end;
 
-procedure TFrm.FillStatistics(const votes, max, min, avg, median, proximity: String);
+procedure TFrm.FillStatistics(const votes, bounds, avg, median, proximity: String);
 
   procedure Add(Title, Value: String);
   begin
@@ -437,8 +437,7 @@ begin
     Stats.Clear;
 
     Add(Lang.Get('INFO_STATS_VOTES'), votes);
-    Add(Lang.Get('INFO_STATS_BIGGEST'), max);
-    Add(Lang.Get('INFO_STATS_SMALLEST'), min);
+    Add(Lang.Get('INFO_STATS_BOUNDS'), bounds);
     Add(Lang.Get('INFO_STATS_AVERAGE'), avg);
     Add(Lang.Get('INFO_STATS_MEDIAN'), median);
     Add(Lang.Get('INFO_STATS_PROXIMITY'), proximity);

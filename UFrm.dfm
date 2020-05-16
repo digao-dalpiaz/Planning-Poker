@@ -33,15 +33,13 @@ object Frm: TFrm
     Top = 0
     Width = 720
     Height = 463
-    ActivePage = TabStart
+    ActivePage = TabPoker
     Align = alClient
     Style = tsButtons
     TabOrder = 0
     TabStop = False
-    ExplicitWidth = 705
     object TabStart: TTabSheet
       Caption = 'Start'
-      ExplicitWidth = 697
       object LbWelcome: TLabel
         Left = 0
         Top = 0
@@ -422,7 +420,6 @@ object Frm: TFrm
     end
     object TabPoker: TTabSheet
       Caption = 'Poker'
-      ExplicitWidth = 697
       object LbParticipants: TLabel
         Left = 16
         Top = 8
@@ -558,18 +555,23 @@ object Frm: TFrm
         Caption = 'Estimate'
         TabOrder = 1
         object LbYourEstimate: TLabel
-          Left = 48
+          Left = 16
           Top = 24
           Width = 70
           Height = 13
           Caption = 'Your estimate:'
         end
         object BtnSendValue: TBitBtn
-          Left = 120
+          Left = 16
           Top = 96
           Width = 97
           Height = 41
           Caption = 'Send'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
           Glyph.Data = {
             36180000424D3618000000000000360000002800000040000000200000000100
             1800000000000018000000000000000000000000000000000000C080FFC080FF
@@ -766,22 +768,23 @@ object Frm: TFrm
             85707171707171858585C080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
             80FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FF}
           NumGlyphs = 2
-          TabOrder = 3
+          ParentFont = False
+          TabOrder = 2
           OnClick = BtnSendValueClick
         end
         object BtnSpin: TUpDown
-          Left = 145
+          Left = 81
           Top = 40
-          Width = 40
+          Width = 32
           Height = 41
           Associate = EdNumber
           Max = 999
           TabOrder = 1
         end
         object EdNumber: TEdit
-          Left = 48
+          Left = 16
           Top = 40
-          Width = 97
+          Width = 65
           Height = 41
           Alignment = taRightJustify
           Font.Charset = DEFAULT_CHARSET
@@ -796,11 +799,16 @@ object Frm: TFrm
           Text = '0'
         end
         object BtnSendAbstain: TBitBtn
-          Left = 16
+          Left = 120
           Top = 96
           Width = 97
           Height = 41
           Caption = 'Abstain'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = []
           Glyph.Data = {
             36180000424D3618000000000000360000002800000040000000200000000100
             1800000000000018000000000000000000000000000000000000C080FFC080FF
@@ -997,7 +1005,8 @@ object Frm: TFrm
             82C080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC0
             80FFC080FFC080FFC080FFC080FFC080FFC080FFC080FFC080FF}
           NumGlyphs = 2
-          TabOrder = 2
+          ParentFont = False
+          TabOrder = 3
           OnClick = BtnSendAbstainClick
         end
       end
@@ -1426,11 +1435,11 @@ object Frm: TFrm
         Height = 145
         Columns = <
           item
-            Width = 129
+            Width = 100
           end
           item
             Alignment = taRightJustify
-            Width = 100
+            Width = 129
           end>
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -1465,7 +1474,6 @@ object Frm: TFrm
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitWidth = 705
   end
   object IL: TImageList
     Height = 24
