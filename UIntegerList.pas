@@ -6,7 +6,7 @@ uses System.Generics.Collections;
 
 type
   TIntegerList = class(TList<Integer>)
-    max, min: Integer;
+    votes, max, min: Integer;
     avg, median, proximity: Extended;
 
     procedure CalcStatistics;
@@ -19,11 +19,7 @@ uses System.Generics.Defaults;
 procedure TIntegerList.CalcStatistics;
 var I, sum: Integer;
 begin
-  max := 0;
-  min := 0;
-  avg := 0;
-  median := 0;
-  proximity := 0;
+  votes := Count;
 
   sum := 0;
 

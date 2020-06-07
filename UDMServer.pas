@@ -135,10 +135,10 @@ begin
       S.Unlock;
     end;
 
-    l_nums.CalcStatistics;
+    if not OpenedRound then l_nums.CalcStatistics;
     //general properties
     lst.Insert(0, ArrayToMsg([OpenedRound,
-      l_nums.Count, Format('%d < %d', [l_nums.min, l_nums.max]),
+      l_nums.votes, Format('%d < %d', [l_nums.min, l_nums.max]),
       FormatFloat('0.0', l_nums.avg), FormatFloat('0.0', l_nums.median),
       FormatFloat('0 %', l_nums.proximity)+' '+Format('(%d/%d)', [l_nums.min, l_nums.max])]));
 
