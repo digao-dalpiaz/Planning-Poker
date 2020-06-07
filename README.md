@@ -3,9 +3,13 @@
 
 ## Delphi App to send Sprint Planning Estimates remotely
 
-[Download Planning Poker v1.3.0](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.3.0/PlanningPoker.exe)
+[Download Planning Poker v1.3.1](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.3.1/PlanningPoker.exe)
 
 ## What's New
+
+- 06/07/2020 (Version 1.3.1)
+
+   - Fixed "Refresh button" that reveals statistics when a round is in course (issue #4).
 
 - 05/13/2020 (Version 1.3.0)
 
