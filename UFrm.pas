@@ -62,6 +62,8 @@ type
     procedure EdLanguageChange(Sender: TObject);
     procedure BtnSendAbstainClick(Sender: TObject);
   private
+    RoundMinValue, RoundMaxValue: Integer;
+
     procedure SetBoxEstimate(hab: Boolean);
     procedure FillStatistics(const votes, bounds, avg, median, proximity: String);
     procedure ResetAllControls;
@@ -89,7 +91,7 @@ implementation
 
 uses Vars, UItem, UDMServer, UDMClient, Utils, ULanguage,
   System.SysUtils, Vcl.Graphics, Winapi.Windows, Vcl.Dialogs, System.UITypes,
-  Winapi.ShellAPI, System.Win.Registry;
+  Winapi.ShellAPI, System.Win.Registry, System.Math;
 
 procedure TFrm.FormCreate(Sender: TObject);
 begin
@@ -255,6 +257,7 @@ var
   Item: TItem;
   Res: String;
   Cor: TColor;
+  IdxBoundIcon: Integer;
 begin
   L.Canvas.Font.Color := clBlack;
   if odSelected in State  then L.Canvas.Brush.Color := clYellow;
@@ -286,6 +289,16 @@ begin
       begin
         Res := Format(Lang.Get('LIST_ITEM_VALUE'), [Item.Number]);
         Cor := clBlack;
+
+        if RoundMinValue<>RoundMaxValue then
+        begin
+          IdxBoundIcon := -1;
+          if Item.Number=RoundMinValue then IdxBoundIcon := 1 else
+          if Item.Number=RoundMaxValue then IdxBoundIcon := 2;
+
+          if IdxBoundIcon<>-1 then
+            IL.Draw(L.Canvas, Rect.Left+275, Rect.Top+2, IdxBoundIcon);
+        end;
       end else
       begin
         Res := Lang.Get('LIST_ITEM_ABSTAINED');
@@ -370,6 +383,15 @@ begin
   if hab then EdNumber.Clear;
 end;
 
+function CompareItems(List: TStringList; Index1, Index2: Integer): Integer;
+var Item1, Item2: TItem;
+begin
+   Item1 := TItem(List.Objects[Index1]);
+   Item2 := TItem(List.Objects[Index2]);
+
+   Result := CompareValue(Item2.Number, Item1.Number);
+end;
+
 procedure TFrm.FillClientsList(const A: String);
 var
   Data: TMsgArray;
@@ -377,6 +399,7 @@ var
   props: String;
   TopIdx, IDSel, Idx: Integer;
   data_client: String;
+  TempStrings: TStringList;
 begin
   lst := TStringList.Create;
   try
@@ -385,7 +408,9 @@ begin
     props := lst[0]; //first line contains general properties
     Data := MsgToArray(props);
     SetBoxEstimate(Data[0]);
-    FillStatistics(Data[1], Data[2], Data[3], Data[4], Data[5]);
+    RoundMinValue := Data[1];
+    RoundMaxValue := Data[2];
+    FillStatistics(Data[3], Data[4], Data[5], Data[6], Data[7]);
     lst.Delete(0);
     //**keep box loading before list because drawing depends on this
 
@@ -401,6 +426,15 @@ begin
       for data_client in lst do
       begin
         AddItem(data_client);
+      end;
+
+      TempStrings := TStringList.Create;
+      try
+        TempStrings.Assign(L.Items);
+        TempStrings.CustomSort(CompareItems);
+        L.Items.Assign(TempStrings);
+      finally
+        TempStrings.Free;
       end;
 
       L.TopIndex := TopIdx;
