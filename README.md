@@ -7,6 +7,10 @@
 
 ## What's New
 
+- 06/11/2020 (Version 1.3.2)
+
+   - Implemented bounds icons on connections list, and sort list by estimate value (issue #5).
+
 - 06/07/2020 (Version 1.3.1)
 
    - Fixed "Refresh button" that reveals statistics when a round is in course (issue #4).
