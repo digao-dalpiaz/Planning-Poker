@@ -89,7 +89,7 @@ implementation
 
 {$R *.dfm}
 
-uses Vars, UItem, UDMServer, UDMClient, Utils, ULanguage,
+uses Vars, UItem, UDMServer, UDMClient, Utils, ULanguage, UVersionCheck,
   System.SysUtils, Vcl.Graphics, Winapi.Windows, Vcl.Dialogs, System.UITypes,
   Winapi.ShellAPI, System.Win.Registry, System.Math;
 
@@ -107,6 +107,8 @@ begin
 
   if EdLanguage.ItemIndex=-1 then EdLanguage.ItemIndex := 0;
   EdLanguageChange(nil);
+
+  CheckMyVersion;
 end;
 
 procedure TFrm.FormDestroy(Sender: TObject);

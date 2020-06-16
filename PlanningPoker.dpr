@@ -12,7 +12,8 @@ uses
   UDMServer in 'UDMServer.pas' {DMServer: TDataModule},
   Utils in 'Utils.pas',
   UIntegerList in 'UIntegerList.pas',
-  ULanguage in 'ULanguage.pas';
+  ULanguage in 'ULanguage.pas',
+  UVersionCheck in 'UVersionCheck.pas';
 
 {$R *.res}
 
