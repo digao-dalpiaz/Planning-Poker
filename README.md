@@ -10,7 +10,7 @@
 - 06/16/2020 (Version 1.3.2)
 
    - Implemented bounds icons on connections list, and sort list by estimate value (issue #5).
-   - Implemented version check on application startup (issue #6);
+   - Implemented version check on application startup (issue #6).
 
 - 06/07/2020 (Version 1.3.1)
 
