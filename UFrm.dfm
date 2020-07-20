@@ -40,6 +40,10 @@ object Frm: TFrm
     TabStop = False
     object TabStart: TTabSheet
       Caption = 'Start'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object LbWelcome: TLabel
         Left = 0
         Top = 0

@@ -7,6 +7,13 @@
 
 ## What's New
 
+- 07/20/2020 (Version 1.4.0)
+
+   - Updated DzSocket to new authentication control.
+   - Implemented TCriticalSection on client list management.
+   - Implemented check for user name already connected on client connection.
+   - Included server version on wrong version message on client connection.
+
 - 06/16/2020 (Version 1.3.2)
 
    - Implemented bounds icons on connections list, and sort list by estimate value (issue #5).

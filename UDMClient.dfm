@@ -5,6 +5,8 @@ object DMClient: TDMClient
   Width = 372
   object C: TDzTCPClient
     KeepAlive = True
+    OnLoginRequest = CLoginRequest
+    OnLoginResponse = CLoginResponse
     OnConnect = CConnect
     OnDisconnect = CDisconnect
     OnRead = CRead

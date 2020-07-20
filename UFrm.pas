@@ -74,7 +74,7 @@ type
     procedure ReloadLanguage;
     procedure SendValue(Value: Integer);
   public
-    procedure ClientConnected;
+    procedure ClientAccepted;
     procedure ClientDisconnected;
     procedure FillClientsList(const A: String);
     procedure AddItem(const A: String);
@@ -89,7 +89,8 @@ implementation
 
 {$R *.dfm}
 
-uses Vars, UItem, UDMServer, UDMClient, Utils, ULanguage, UVersionCheck,
+uses Vars, UItem, UDMServer, UDMClient,
+  Utils, ULanguage, UVersionCheck, DzSocket,
   System.SysUtils, Vcl.Graphics, Winapi.Windows, Vcl.Dialogs, System.UITypes,
   Winapi.ShellAPI, System.Win.Registry, System.Math;
 
@@ -169,7 +170,7 @@ procedure TFrm.ClearAllClients;
 var I: Integer;
 begin
   for I := 0 to L.Count-1 do
-    L.Items.Objects[I].Free;
+    GetItemByIndex(I).Free;
 
   L.Clear;
 end;
@@ -238,7 +239,7 @@ begin
   DMClient.C.Connect;
 end;
 
-procedure TFrm.ClientConnected;
+procedure TFrm.ClientAccepted;
 begin
   Pages.ActivePage := TabPoker;
 end;
@@ -267,7 +268,7 @@ begin
 
   IL.Draw(L.Canvas, Rect.Left+3, Rect.Top+2, 0);
 
-  Item := TItem(L.Items.Objects[Index]);
+  Item := GetItemByIndex(Index);
 
   L.Canvas.TextOut(Rect.Left+30, Rect.Top+4, Item.User);
 
@@ -316,16 +317,16 @@ end;
 
 procedure TFrm.AddItem(const A: String);
 var
-  Data: TMsgArray;
+  MA: TMsgArray;
   Item: TItem;
 begin
-  Data := MsgToArray(A);
+  MA := DataToArray(A);
 
   Item := TItem.Create;
-  Item.ID := Data[0];
-  Item.User := Data[1];
-  Item.Estimated := Data[2];
-  Item.Number := Data[3];
+  Item.ID := MA[0];
+  Item.User := MA[1];
+  Item.Estimated := MA[2];
+  Item.Number := MA[3];
   L.Items.AddObject('', Item);
 end;
 
@@ -396,7 +397,7 @@ end;
 
 procedure TFrm.FillClientsList(const A: String);
 var
-  Data: TMsgArray;
+  MA: TMsgArray;
   lst: TStringList;
   props: String;
   TopIdx, IDSel, Idx: Integer;
@@ -408,11 +409,11 @@ begin
     lst.Text := A;
 
     props := lst[0]; //first line contains general properties
-    Data := MsgToArray(props);
-    SetBoxEstimate(Data[0]);
-    RoundMinValue := Data[1];
-    RoundMaxValue := Data[2];
-    FillStatistics(Data[3], Data[4], Data[5], Data[6], Data[7]);
+    MA := DataToArray(props);
+    SetBoxEstimate(MA[0]);
+    RoundMinValue := MA[1];
+    RoundMaxValue := MA[2];
+    FillStatistics(MA[3], MA[4], MA[5], MA[6], MA[7]);
     lst.Delete(0);
     //**keep box loading before list because drawing depends on this
 
@@ -421,7 +422,7 @@ begin
       TopIdx := L.TopIndex;
       IDSel := -1;
       if L.ItemIndex<>-1 then
-        IDSel := TItem(L.Items.Objects[L.ItemIndex]).ID;
+        IDSel := GetItemByIndex(L.ItemIndex).ID;
 
       ClearAllClients;
 
