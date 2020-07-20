@@ -7,7 +7,7 @@
 
 ## What's New
 
-- 99/99/9999 (Version 1.4.0)
+- 07/20/2020 (Version 1.4.0)
 
    - Updated DzSocket to new authentication control.
    - Implemented TCriticalSection on client list management.
