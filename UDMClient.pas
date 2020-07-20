@@ -21,6 +21,7 @@ type
       var Data: string);
     procedure CLoginResponse(Sender: TObject; Socket: TDzSocket;
       Accepted: Boolean; const Data: string);
+    procedure CConnect(Sender: TObject; Socket: TDzSocket);
   private
     procedure OtherClientConnected(const A: String);
     procedure OtherClientDisconnected(const A: String);
@@ -65,6 +66,11 @@ begin
   end;
 end;
 
+procedure TDMClient.CConnect(Sender: TObject; Socket: TDzSocket);
+begin
+  Log(Lang.Get('LOG_CONNECTED'));
+end;
+
 procedure TDMClient.CLoginRequest(Sender: TObject; Socket: TDzSocket;
   var Data: string);
 begin
@@ -78,8 +84,7 @@ begin
   if Accepted then
   begin
     //server accepted client connection
-    Log(Lang.Get('LOG_CONNECTED'));
-    Frm.ClientConnected;
+    Frm.ClientAccepted;
   end else
   begin
     if Data.StartsWith('V') then

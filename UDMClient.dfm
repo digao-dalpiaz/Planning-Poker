@@ -7,6 +7,7 @@ object DMClient: TDMClient
     KeepAlive = True
     OnLoginRequest = CLoginRequest
     OnLoginResponse = CLoginResponse
+    OnConnect = CConnect
     OnDisconnect = CDisconnect
     OnRead = CRead
     OnError = CError

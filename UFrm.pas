@@ -74,7 +74,7 @@ type
     procedure ReloadLanguage;
     procedure SendValue(Value: Integer);
   public
-    procedure ClientConnected;
+    procedure ClientAccepted;
     procedure ClientDisconnected;
     procedure FillClientsList(const A: String);
     procedure AddItem(const A: String);
@@ -239,7 +239,7 @@ begin
   DMClient.C.Connect;
 end;
 
-procedure TFrm.ClientConnected;
+procedure TFrm.ClientAccepted;
 begin
   Pages.ActivePage := TabPoker;
 end;
