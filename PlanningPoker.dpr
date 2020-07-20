@@ -13,7 +13,8 @@ uses
   Utils in 'Utils.pas',
   UIntegerList in 'UIntegerList.pas',
   ULanguage in 'ULanguage.pas',
-  UVersionCheck in 'UVersionCheck.pas';
+  UVersionCheck in 'UVersionCheck.pas',
+  USyncClient in 'USyncClient.pas';
 
 {$R *.res}
 

@@ -15,13 +15,16 @@ type
     procedure SClientError(Sender: TObject; Socket: TDzSocket;
       const Event: TErrorEvent; const ErrorCode: Integer;
       const ErrorMsg: string);
+    procedure SClientLoginCheck(Sender: TObject; Socket: TDzSocket;
+      var Accept: Boolean; const RequestData: string; var ResponseData: string);
+    procedure SClientLoginSuccess(Sender: TObject; Socket: TDzSocket);
   private
-    procedure ClientConnect(Socket: TDzSocket; const A: String);
     procedure ClientNumberPointed(Socket: TDzSocket; const A: String);
     function ClientToArray(Socket: TDzSocket): String;
     procedure ClientRefreshRequest(Socket: TDzSocket);
     procedure ClearEstimatives;
     procedure CheckForAllClientsEstimateDone;
+    function ClientNameExists(const UserName: String): Boolean;
   public
     OpenedRound: Boolean;
     function GetClientsList: String;
@@ -46,44 +49,49 @@ procedure TDMServer.DataModuleCreate(Sender: TObject);
 begin
   S.Port := INT_PORT;
   S.AutoFreeObjs := True;
-  S.SendAllOnlyWithData := True;
-end;
-
-function InvalidSocket(Socket: TDzSocket): Boolean;
-begin
-  Result := (Socket.Data=nil);
+  S.EnumeratorOnlyAuth := True;
 end;
 
 procedure TDMServer.SClientRead(Sender: TObject; Socket: TDzSocket;
   const Cmd: Char; const A: string);
 begin
   case Cmd of
-    'C': ClientConnect(Socket, A);
     'N': ClientNumberPointed(Socket, A);
     'R': ClientRefreshRequest(Socket);
   end;
 end;
 
-procedure TDMServer.ClientConnect(Socket: TDzSocket; const A: String);
+procedure TDMServer.SClientLoginCheck(Sender: TObject; Socket: TDzSocket;
+  var Accept: Boolean; const RequestData: string; var ResponseData: string);
 var
-  Data: TMsgArray;
+  MA: TMsgArray;
   C: TClient;
 begin
-  Data := MsgToArray(A);
+  MA := DataToArray(RequestData);
 
-  if Data[0]<>STR_VERSION then
+  if MA[0]<>STR_VERSION then
   begin
-    Socket.Send('V'); //send to client your version is not supported
-    Socket.Close; //drop client
+    Accept := False;
+    ResponseData := 'V'+STR_VERSION;
+    Exit;
+  end;
+
+  if ClientNameExists(MA[1]) then
+  begin
+    Accept := False;
+    ResponseData := 'U';
     Exit;
   end;
 
   C := TClient.Create;
-  C.User := Data[1];
+  C.User := MA[1];
   Socket.Data := C;
+end;
 
-  //send accepted with clients list to the client
-  S.Send(Socket, 'E', GetClientsList);
+procedure TDMServer.SClientLoginSuccess(Sender: TObject; Socket: TDzSocket);
+begin
+  //send clients list to the client
+  S.Send(Socket, 'L', GetClientsList);
   //send to other clients that a client connected
   S.SendAllEx(Socket, 'C', ClientToArray(Socket));
 end;
@@ -105,7 +113,7 @@ var C: TClient;
 begin
    C := Socket.Data;
 
-   Result := ArrayToMsg([Socket.ID, C.User, C.Estimated,
+   Result := ArrayToData([Socket.ID, C.User, C.Estimated,
      IfThen(OpenedRound, 0, C.Number)]);
 end;
 
@@ -123,8 +131,6 @@ begin
     try
       for k in S do
       begin
-        if InvalidSocket(k) then Continue;
-
         lst.Add(ClientToArray(k));
 
         C := k.Data;
@@ -137,7 +143,7 @@ begin
 
     if not OpenedRound then l_nums.CalcStatistics;
     //general properties
-    lst.Insert(0, ArrayToMsg([OpenedRound, l_nums.min, l_nums.max,
+    lst.Insert(0, ArrayToData([OpenedRound, l_nums.min, l_nums.max,
       l_nums.votes, Format('%d < %d', [l_nums.min, l_nums.max]),
       FormatFloat('0.0', l_nums.avg), FormatFloat('0.0', l_nums.median),
       FormatFloat('0 %', l_nums.proximity)+' '+Format('(%d/%d)', [l_nums.min, l_nums.max])]));
@@ -153,8 +159,6 @@ procedure TDMServer.ClientNumberPointed(Socket: TDzSocket; const A: String);
 var C: TClient;
 begin
   //a client made an estimate
-  if InvalidSocket(Socket) then Exit;
-
   if not OpenedRound then Exit;
 
   C := Socket.Data;
@@ -170,8 +174,6 @@ end;
 procedure TDMServer.ClientRefreshRequest(Socket: TDzSocket);
 begin
   //client request a list refresh
-  if InvalidSocket(Socket) then Exit;
-
   S.Send(Socket, 'L', GetClientsList);
 end;
 
@@ -184,8 +186,6 @@ begin
   try
     for k in S do
     begin
-      if InvalidSocket(k) then Continue;
-
       C := k.Data;
       C.Estimated := False;
       C.Number := 0;
@@ -222,8 +222,6 @@ begin
   try
     for k in S do
     begin
-      if InvalidSocket(k) then Continue;
-
       C := k.Data;
       if not C.Estimated then Exit;
     end;
@@ -233,6 +231,25 @@ begin
 
   //when all clients have estimate done, then close the round
   CloseRound;
+end;
+
+function TDMServer.ClientNameExists(const UserName: String): Boolean;
+var
+  k: TDzSocket;
+  C: TClient;
+begin
+  S.Lock;
+  try
+    for k in S do
+    begin
+      C := k.Data;
+      if SameText(C.User, UserName) then Exit(True);
+    end;
+  finally
+    S.Unlock;
+  end;
+
+  Exit(False);
 end;
 
 end.

@@ -114,6 +114,7 @@
         <DCCReference Include="UIntegerList.pas"/>
         <DCCReference Include="ULanguage.pas"/>
         <DCCReference Include="UVersionCheck.pas"/>
+        <DCCReference Include="USyncClient.pas"/>
         <RcItem Include="beep.wav">
             <ContainerId>ResourceItem</ContainerId>
             <ResourceType>RCDATA</ResourceType>
@@ -150,6 +151,12 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="Win32\Debug\PlanningPoker.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>PlanningPoker.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Release\PlanningPoker.exe" Configuration="Release" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>PlanningPoker.exe</RemoteName>
@@ -159,12 +166,6 @@
                 <DeployFile LocalName="beep.wav" Configuration="Release" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Win32\Debug\PlanningPoker.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>PlanningPoker.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
