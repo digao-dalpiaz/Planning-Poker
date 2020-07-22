@@ -392,7 +392,10 @@ begin
    Item1 := TItem(List.Objects[Index1]);
    Item2 := TItem(List.Objects[Index2]);
 
-   Result := CompareValue(Item2.Number, Item1.Number);
+   if Item1.Number<>Item2.Number then
+     Result := CompareValue(Item2.Number, Item1.Number)
+   else
+     Result := CompareText(Item1.User, Item2.User);
 end;
 
 procedure TFrm.FillClientsList(const A: String);
