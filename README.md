@@ -7,6 +7,10 @@
 
 ## What's New
 
+- 07/22/2020
+
+   - Sorting users list by name after sorting by estimate number.
+
 - 07/20/2020 (Version 1.4.0)
 
    - Updated DzSocket to new authentication control.
