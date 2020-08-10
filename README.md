@@ -3,11 +3,11 @@
 
 ## Delphi App to send Sprint Planning Estimates remotely
 
-[Download Planning Poker v1.4.0](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.4.0/PlanningPoker.exe)
+[Download Planning Poker v1.4.1](https://github.com/digao-dalpiaz/Planning-Poker/releases/download/v1.4.1/PlanningPoker.exe)
 
 ## What's New
 
-- 07/22/2020
+- 08/10/2020 (Version 1.4.1)
 
    - Sorting users list by name after sorting by estimate number.
 
