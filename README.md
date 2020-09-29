@@ -49,6 +49,13 @@ You can use in Local Network and/or Internet environment. To use through the Int
 
 The operation is quite simple: the users just fill their names and connect to the server. Then the server operator can open a round, when the users will be able to send their estimates. At this time, no one can see the numbers, neither the server. When the estimates are completed, the server operator can close the round, and then the numbers and statistics will be revealed to everyone. :grin:
 
+## Supported languages
+
+- English
+- Portuguese Brazil
+
+## Demo Screens
+
 Start page:
 
 ![Start Tab](images/start_tab.png)
