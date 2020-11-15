@@ -65,7 +65,7 @@ type
     RoundMinValue, RoundMaxValue: Integer;
 
     procedure SetBoxEstimate(hab: Boolean);
-    procedure FillStatistics(const votes, bounds, avg, median, proximity: String);
+    procedure FillStatistics(const votes, bounds, avg, median, proximity: string);
     procedure ResetAllControls;
     procedure ClearAllClients;
     procedure LoadRegistry;
@@ -76,8 +76,8 @@ type
   public
     procedure ClientAccepted;
     procedure ClientDisconnected;
-    procedure FillClientsList(const A: String);
-    procedure AddItem(const A: String);
+    procedure FillClientsList(const A: string);
+    procedure AddItem(const A: string);
     procedure AtCountConnections;
     procedure SetRoundButtons(hab: Boolean);
   end;
@@ -180,7 +180,7 @@ begin
   ClearAllClients;
   Stats.Clear;
   BoxEstimate.Visible := False;
-  LbCountConnections.Caption := String.Empty;
+  LbCountConnections.Caption := string.Empty;
   LbUser.Caption := pubUser;
 
   DMServer.OpenedRound := False;
@@ -199,7 +199,7 @@ end;
 procedure TFrm.BtnStartClick(Sender: TObject);
 begin
   EdUser.Text := Trim(EdUser.Text);
-  if EdUser.Text=String.Empty then
+  if EdUser.Text=string.Empty then
   begin
     MessageDlg(Lang.Get('ERROR_NAME_BLANK'), mtError, [mbOK], 0);
     EdUser.SetFocus;
@@ -209,7 +209,7 @@ begin
   if BoxCfgClient.Visible then
   begin
     EdHost.Text := Trim(EdHost.Text);
-    if EdHost.Text=String.Empty then
+    if EdHost.Text=string.Empty then
     begin
       MessageDlg(Lang.Get('ERROR_SERVER_BLANK'), mtError, [mbOK], 0);
       EdHost.SetFocus;
@@ -258,7 +258,7 @@ procedure TFrm.LDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
   State: TOwnerDrawState);
 var
   Item: TItem;
-  Res: String;
+  Res: string;
   Cor: TColor;
   IdxBoundIcon: Integer;
 begin
@@ -315,7 +315,7 @@ begin
   L.Canvas.TextOut(Rect.Left+300, Rect.Top+4, Res);
 end;
 
-procedure TFrm.AddItem(const A: String);
+procedure TFrm.AddItem(const A: string);
 var
   MA: TMsgArray;
   Item: TItem;
@@ -398,13 +398,13 @@ begin
      Result := CompareText(Item1.User, Item2.User);
 end;
 
-procedure TFrm.FillClientsList(const A: String);
+procedure TFrm.FillClientsList(const A: string);
 var
   MA: TMsgArray;
   lst: TStringList;
-  props: String;
+  props: string;
   TopIdx, IDSel, Idx: Integer;
-  data_client: String;
+  data_client: string;
   TempStrings: TStringList;
 begin
   lst := TStringList.Create;
@@ -460,9 +460,9 @@ begin
   AtCountConnections;
 end;
 
-procedure TFrm.FillStatistics(const votes, bounds, avg, median, proximity: String);
+procedure TFrm.FillStatistics(const votes, bounds, avg, median, proximity: string);
 
-  procedure Add(Title, Value: String);
+  procedure Add(Title, Value: string);
   begin
     with Stats.Items.Add do
     begin

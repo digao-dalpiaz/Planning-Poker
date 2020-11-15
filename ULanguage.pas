@@ -9,7 +9,7 @@ type
 
   TLang = class
   private
-    Section: String;
+    Section: string;
     Ini: TMemIniFile;
   public
     constructor Create;
@@ -17,7 +17,7 @@ type
 
     procedure SetLanguage(aLanguageName: TLanguageName);
 
-    function Get(const Ident: String): String;
+    function Get(const Ident: string): string;
   end;
 
 var Lang: TLang;
@@ -71,7 +71,7 @@ begin
   end;
 end;
 
-function TLang.Get(const Ident: String): String;
+function TLang.Get(const Ident: string): string;
 begin
   Result := Ini.ReadString(Section, Ident, '');
 

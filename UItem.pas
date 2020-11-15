@@ -6,7 +6,7 @@ interface
 
 type TItem = class
   ID: Integer;
-  User: String;
+  User: string;
 
   Estimated: Boolean;
   Number: Integer;

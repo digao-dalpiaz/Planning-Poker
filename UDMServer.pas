@@ -19,15 +19,15 @@ type
       var Accept: Boolean; const RequestData: string; var ResponseData: string);
     procedure SClientLoginSuccess(Sender: TObject; Socket: TDzSocket);
   private
-    procedure ClientNumberPointed(Socket: TDzSocket; const A: String);
-    function ClientToArray(Socket: TDzSocket): String;
+    procedure ClientNumberPointed(Socket: TDzSocket; const A: string);
+    function ClientToArray(Socket: TDzSocket): string;
     procedure ClientRefreshRequest(Socket: TDzSocket);
     procedure ClearEstimatives;
     procedure CheckForAllClientsEstimateDone;
-    function ClientNameExists(const UserName: String): Boolean;
+    function ClientNameExists(const UserName: string): Boolean;
   public
     OpenedRound: Boolean;
-    function GetClientsList: String;
+    function GetClientsList: string;
 
      procedure OpenRound;
     procedure CloseRound;
@@ -108,7 +108,7 @@ begin
   Log(Format('SERVER ERROR: (Socket %d) %s', [Socket.ID, ErrorMsg]));
 end;
 
-function TDMServer.ClientToArray(Socket: TDzSocket): String;
+function TDMServer.ClientToArray(Socket: TDzSocket): string;
 var C: TClient;
 begin
    C := Socket.Data;
@@ -117,7 +117,7 @@ begin
      IfThen(OpenedRound, 0, C.Number)]);
 end;
 
-function TDMServer.GetClientsList: String;
+function TDMServer.GetClientsList: string;
 var
   lst: TStringList;
   l_nums: TIntegerList;
@@ -155,7 +155,7 @@ begin
   end;
 end;
 
-procedure TDMServer.ClientNumberPointed(Socket: TDzSocket; const A: String);
+procedure TDMServer.ClientNumberPointed(Socket: TDzSocket; const A: string);
 var C: TClient;
 begin
   //a client made an estimate
@@ -233,7 +233,7 @@ begin
   CloseRound;
 end;
 
-function TDMServer.ClientNameExists(const UserName: String): Boolean;
+function TDMServer.ClientNameExists(const UserName: string): Boolean;
 var
   k: TDzSocket;
   C: TClient;

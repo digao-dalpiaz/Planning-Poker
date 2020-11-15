@@ -23,7 +23,7 @@ type
 procedure TThCheck.Check;
 var
   H: THTTPClient;
-  Res, tag_versao, tag_url: String;
+  Res, tag_versao, tag_url: string;
   data: TJSONObject;
 begin
   H := THTTPClient.Create;

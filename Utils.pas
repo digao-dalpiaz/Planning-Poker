@@ -2,7 +2,7 @@ unit Utils;
 
 interface
 
-procedure Log(const A: String);
+procedure Log(const A: string);
 
 procedure PlaySound;
 
@@ -11,7 +11,7 @@ implementation
 uses UFrm, System.SysUtils,
  System.Classes, Winapi.Windows, Winapi.MMSystem;
 
-procedure Log(const A: String);
+procedure Log(const A: string);
 begin
   Frm.EdLog.Lines.Add(DateTimeToStr(Now) + ' - ' + A);
 end;

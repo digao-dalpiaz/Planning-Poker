@@ -3,7 +3,7 @@ unit Vars;
 interface
 
 var
-  pubUser: String;
+  pubUser: string;
   pubServerMode: Boolean;
 
 const STR_VERSION = '1.4.1';

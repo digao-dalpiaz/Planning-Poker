@@ -23,12 +23,12 @@ type
       Accepted: Boolean; const Data: string);
     procedure CConnect(Sender: TObject; Socket: TDzSocket);
   private
-    procedure OtherClientConnected(const A: String);
-    procedure OtherClientDisconnected(const A: String);
-    procedure ReceivedListOfClients(const A: String);
-    procedure ReceivedOpenRound(const A: String);
-    procedure ClientPointed(const A: String);
-    procedure ReceivedCloseRound(const A: String);
+    procedure OtherClientConnected(const A: string);
+    procedure OtherClientDisconnected(const A: string);
+    procedure ReceivedListOfClients(const A: string);
+    procedure ReceivedOpenRound(const A: string);
+    procedure ClientPointed(const A: string);
+    procedure ReceivedCloseRound(const A: string);
   end;
 
 var
@@ -117,14 +117,14 @@ begin
   Log(Format(Lang.Get('LOG_SOCKET_ERROR'), [ErrorMsg]));
 end;
 
-procedure TDMClient.OtherClientConnected(const A: String);
+procedure TDMClient.OtherClientConnected(const A: string);
 begin
   //a client connected - add into list
   Frm.AddItem(A);
   Frm.AtCountConnections;
 end;
 
-procedure TDMClient.OtherClientDisconnected(const A: String);
+procedure TDMClient.OtherClientDisconnected(const A: string);
 var Idx: Integer;
 begin
   //a client disconnected - remove from list
@@ -138,7 +138,7 @@ begin
   end;
 end;
 
-procedure TDMClient.ClientPointed(const A: String);
+procedure TDMClient.ClientPointed(const A: string);
 var
   Idx: Integer;
   Item: TItem;
@@ -153,7 +153,7 @@ begin
   end;
 end;
 
-procedure TDMClient.ReceivedOpenRound(const A: String);
+procedure TDMClient.ReceivedOpenRound(const A: string);
 begin
   Log(Lang.Get('LOG_ROUND_OPENED'));
   //server opened estimate round
@@ -162,14 +162,14 @@ begin
   PlaySound;
 end;
 
-procedure TDMClient.ReceivedCloseRound(const A: String);
+procedure TDMClient.ReceivedCloseRound(const A: string);
 begin
   Log(Lang.Get('LOG_ROUND_CLOSED'));
   //server closed estimate round
   Frm.FillClientsList(A);
 end;
 
-procedure TDMClient.ReceivedListOfClients(const A: String);
+procedure TDMClient.ReceivedListOfClients(const A: string);
 begin
   Log(Lang.Get('LOG_LIST_RECEIVED'));
   //clients list received

@@ -5,7 +5,7 @@ interface
 //Data class for server client
 
 type TClient = class
-  User: String;
+  User: string;
 
   Estimated: Boolean;
   Number: Integer;
