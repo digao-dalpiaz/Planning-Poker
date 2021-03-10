@@ -7,6 +7,11 @@
 
 ## What's New
 
+- 03/09/2021 (Version 1.4.2)
+
+   - New Drop User button in server mode.
+   - Bold font when yourself user in users list.
+
 - 08/10/2020 (Version 1.4.1)
 
    - Sorting users list by name after sorting by estimate number.
