@@ -7,7 +7,7 @@ var
   pubServerMode: Boolean;
   pubClientID: Integer;
 
-const STR_VERSION = '1.4.1';
+const STR_VERSION = '1.4.2';
 
 const INT_PORT = 6696;
 
