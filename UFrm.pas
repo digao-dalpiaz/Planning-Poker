@@ -47,6 +47,7 @@ type
     LbLanguage: TLabel;
     EdLanguage: TComboBox;
     BtnSendAbstain: TBitBtn;
+    BtnDropUser: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     procedure BoxModeClick(Sender: TObject);
     procedure BtnStartClick(Sender: TObject);
@@ -61,6 +62,7 @@ type
       LinkType: TSysLinkType);
     procedure EdLanguageChange(Sender: TObject);
     procedure BtnSendAbstainClick(Sender: TObject);
+    procedure BtnDropUserClick(Sender: TObject);
   private
     RoundMinValue, RoundMaxValue: Integer;
 
@@ -184,6 +186,7 @@ begin
   LbUser.Caption := pubUser;
 
   DMServer.OpenedRound := False;
+  BtnDropUser.Visible := pubServerMode;
   BoxCmdServer.Visible := pubServerMode;
   SetRoundButtons(False);
 end;
@@ -270,7 +273,9 @@ begin
 
   Item := GetItemByIndex(Index);
 
+  if Item.ID=pubClientID then L.Canvas.Font.Style := [fsBold];
   L.Canvas.TextOut(Rect.Left+30, Rect.Top+4, Item.User);
+  L.Canvas.Font.Style := [];
 
   Cor := clBlack;
   if BoxEstimate.Visible then
@@ -346,17 +351,39 @@ begin
   DMServer.CloseRound;
 end;
 
-procedure TFrm.BtnSendValueClick(Sender: TObject);
-var Val: Integer;
+procedure TFrm.BtnDropUserClick(Sender: TObject);
+var
+  Item: TItem;
+  k: TDzSocket;
 begin
-   Val := StrToIntDef(EdNumber.Text, 0);
+  if L.ItemIndex=-1 then Exit;  
 
-   if Val<=0 then
-   begin
-     MessageDlg(Lang.Get('ERROR_INVALID_VALUE'), mtError, [mbOK], 0);
-     EdNumber.SetFocus;
-     Exit;
-   end;
+  Item := GetItemByIndex(L.ItemIndex);
+  if Item.ID = pubClientID then
+  begin
+    MessageDlg(Lang.Get('ERROR_DROP_YOURSELF'), mtError, [mbOK], 0);
+    Exit;
+  end;
+
+  k := DMServer.S.FindSocketHandle(Item.ID);
+  if k<>nil then
+    k.Close
+  else
+    MessageDlg(Lang.Get('ERROR_MISSING_USER'), mtError, [mbOK], 0);
+end;
+
+procedure TFrm.BtnSendValueClick(Sender: TObject);
+var
+  Val: Integer;
+begin
+  Val := StrToIntDef(EdNumber.Text, 0);
+
+  if Val<=0 then
+  begin
+    MessageDlg(Lang.Get('ERROR_INVALID_VALUE'), mtError, [mbOK], 0);
+    EdNumber.SetFocus;
+    Exit;
+  end;
 
   SendValue(Val);
 end;
@@ -521,6 +548,7 @@ begin
   BtnCloseRound.Caption := Lang.Get('BTN_CLOSE_ROUND');
   LbStatistics.Caption := Lang.Get('LABEL_STATISTICS');
   BtnRefresh.Hint := Lang.Get('HINT_REFRESH_LIST');
+  BtnDropUser.Hint := Lang.Get('HINT_DROP_USER');
 end;
 
 end.

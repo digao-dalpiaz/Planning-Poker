@@ -86,6 +86,8 @@ begin
   C := TClient.Create;
   C.User := MA[1];
   Socket.Data := C;
+
+  ResponseData := Socket.ID.ToString; //send socket handle to client
 end;
 
 procedure TDMServer.SClientLoginSuccess(Sender: TObject; Socket: TDzSocket);

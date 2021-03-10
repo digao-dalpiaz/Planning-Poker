@@ -5,6 +5,7 @@ interface
 var
   pubUser: string;
   pubServerMode: Boolean;
+  pubClientID: Integer;
 
 const STR_VERSION = '1.4.1';
 

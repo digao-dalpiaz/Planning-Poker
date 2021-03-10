@@ -84,6 +84,7 @@ begin
   if Accepted then
   begin
     //server accepted client connection
+    pubClientID := Data.ToInteger;
     Frm.ClientAccepted;
   end else
   begin
